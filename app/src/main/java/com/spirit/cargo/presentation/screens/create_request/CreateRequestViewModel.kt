@@ -2,6 +2,7 @@ package com.spirit.cargo.presentation.screens.create_request
 
 import com.spirit.cargo.presentation.screens.create_request.flows.CreateRequestFlow
 
+
 class CreateRequestViewModel(
     private val createRequestFlow: CreateRequestFlow
 ) : BaseCreateRequestViewModel() {

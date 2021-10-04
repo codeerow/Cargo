@@ -7,13 +7,13 @@ import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ScreenHomeBinding
-import com.spirit.cargo.presentation.core.subscribe
-import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel.State
 import com.spirit.cargo.presentation.screens.home.list_item.RequestsAdapter
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
+import com.spirit.cargo.utils.subscribe
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+
 
 class HomeScreen : Fragment(R.layout.screen_home) {
 
@@ -23,7 +23,9 @@ class HomeScreen : Fragment(R.layout.screen_home) {
     private val requestsAdapter by lazy {
         RequestsAdapter(
             onDeleteClick = viewModel::startDeleteRequestFlow,
-            onListenSwitch = viewModel::startListeningRequestFlow
+            onListenSwitch = { requestId, turnOn ->
+                viewModel.startListeningRequestsFlow(turnOn = turnOn, requestId)
+            }
         )
     }
 
@@ -39,7 +41,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
 
     private fun BaseRequestsViewModel.bind() {
         state.observeOn(AndroidSchedulers.mainThread())
-            .map(State::items)
+            .map(BaseRequestsViewModel.State::items)
             .doOnNext(requestsAdapter::submitList)
             .doOnNext(::bindNoRequestHintVisibility)
             .doOnNext(::bindToggleAllButtonText)
@@ -59,7 +61,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
 
         toggleAll.setOnClickListener {
             viewModel.startListeningRequestsFlow(
-                ids = entities.map { it.id },
+                ids = entities.map { it.id }.toIntArray(),
                 turnOn = !allIsActive
             )
         }

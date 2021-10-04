@@ -3,6 +3,7 @@ package com.spirit.cargo.presentation.screens.home.model
 import androidx.recyclerview.widget.DiffUtil
 import com.spirit.cargo.domain.model.request.model.CargoRequest
 
+
 data class RequestItem(
         val id: Int,
         val title: String,

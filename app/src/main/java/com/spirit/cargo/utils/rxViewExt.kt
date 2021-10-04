@@ -1,4 +1,4 @@
-package com.spirit.cargo.presentation.core
+package com.spirit.cargo.utils
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import timber.log.Timber
 
-fun <T : Any> BehaviorSubject<T>.requireValue(): T = requireNotNull(value)
 
 fun <T : Any> Observable<T>.subscribe(
     lifecycleOwner: LifecycleOwner,

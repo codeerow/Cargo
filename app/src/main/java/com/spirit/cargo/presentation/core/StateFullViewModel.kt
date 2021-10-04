@@ -14,8 +14,9 @@ abstract class StateFullViewModel<S : Any>(initialState: S) : RxViewModel() {
 
     fun <C : Observable<Change<S>>> bindChanges(vararg changes: C) {
         Observable.mergeArray(*changes)
+            .subscribeOn(Schedulers.io())
             .distinctUntilChanged()
-            .map { change -> change(stateRelay.requireValue()) }
+            .map { change -> change(requireNotNull(stateRelay.value) { "State has not been initialized" }) }
             .doOnNext(stateRelay::onNext)
             .subscribeByViewModel()
     }

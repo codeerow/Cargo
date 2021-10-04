@@ -12,6 +12,7 @@ import com.spirit.cargo.databinding.ActivityMainBinding
 import com.spirit.cargo.domain.navigation.Navigation
 import org.koin.android.ext.android.inject
 
+
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

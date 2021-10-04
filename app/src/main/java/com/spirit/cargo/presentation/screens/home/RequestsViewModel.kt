@@ -6,6 +6,7 @@ import com.spirit.cargo.presentation.screens.home.flows.LoadRequestsFlow
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import io.reactivex.rxjava3.core.Observable
 
+
 class RequestsViewModel(
     loadRequestsFlow: LoadRequestsFlow,
     private val deleteRequestFlow: DeleteRequestFlow,
@@ -22,15 +23,11 @@ class RequestsViewModel(
         deleteRequestFlow(id = id).startAsync()
     }
 
-    override fun startListeningRequestFlow(id: Int, turnOn: Boolean) {
-        switchRequestListeningFlow(id = id, turnOn = turnOn).startAsync()
-    }
-
-    override fun startListeningRequestsFlow(ids: List<Int>, turnOn: Boolean) {
-        Observable.fromIterable(ids)
+    override fun startListeningRequestsFlow(turnOn: Boolean, vararg ids: Int) {
+        Observable.fromIterable(ids.toList())
             .flatMapCompletable { id -> switchRequestListeningFlow(id = id, turnOn = turnOn) }
             .startAsync()
     }
 
-    override fun startRequestCreationFlow(): Unit = run { navigateToCreateRequest().subscribe() }
+    override fun startRequestCreationFlow(): Unit = run { navigateToCreateRequest().startAsync() }
 }

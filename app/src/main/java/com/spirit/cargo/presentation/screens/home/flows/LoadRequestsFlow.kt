@@ -7,6 +7,7 @@ import com.spirit.cargo.presentation.screens.home.model.RequestItem
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
+
 typealias StateChange = Change<BaseRequestsViewModel.State>
 
 class LoadRequestsFlow(private val requestRepository: RequestRepository) {

@@ -4,11 +4,11 @@ import com.spirit.cargo.presentation.core.Change
 import com.spirit.cargo.presentation.core.StateFullViewModel
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
 
+
 abstract class BaseRequestsViewModel : StateFullViewModel<BaseRequestsViewModel.State>(initialState = State()) {
 
     abstract fun startDeleteRequestFlow(id: Int)
-    abstract fun startListeningRequestFlow(id: Int, turnOn: Boolean)
-    abstract fun startListeningRequestsFlow(ids: List<Int>, turnOn: Boolean)
+    abstract fun startListeningRequestsFlow(turnOn: Boolean, vararg ids: Int)
     abstract fun startRequestCreationFlow()
 
     data class State(val items: List<RequestItem> = listOf())

@@ -10,6 +10,7 @@ import com.spirit.cargo.R
 import com.spirit.cargo.domain.navigation.Navigation
 import com.spirit.cargo.utils.doNothing
 
+
 class AACNavigation : Navigation<AppCompatActivity> {
     lateinit var navController: NavController
 

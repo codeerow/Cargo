@@ -9,6 +9,7 @@ import com.spirit.cargo.presentation.screens.create_request.BaseCreateRequestVie
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
+
 typealias StateChange = Change<BaseCreateRequestViewModel.State>
 
 class CreateRequestFlow(

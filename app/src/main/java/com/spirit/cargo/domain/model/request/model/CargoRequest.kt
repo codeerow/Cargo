@@ -1,5 +1,6 @@
 package com.spirit.cargo.domain.model.request.model
 
+
 data class CargoRequest(
     val id: Int,
     val title: String,
