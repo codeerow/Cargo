@@ -1,6 +1,5 @@
 package com.spirit.cargo.presentation.core
 
-import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -8,7 +7,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 
-abstract class StateFullViewModel<S : Any>(initialState: S) : ViewModel() {
+abstract class StateFullViewModel<S : Any>(initialState: S) : RxViewModel() {
 
     private val stateRelay: BehaviorSubject<S> = BehaviorSubject.createDefault(initialState)
     val state: Observable<S> get() = stateRelay
@@ -18,8 +17,8 @@ abstract class StateFullViewModel<S : Any>(initialState: S) : ViewModel() {
             .distinctUntilChanged()
             .map { change -> change(stateRelay.requireValue()) }
             .doOnNext(stateRelay::onNext)
-            .subscribe()
+            .subscribeByViewModel()
     }
 
-    fun Completable.start(): Disposable = subscribeOn(Schedulers.io()).subscribe()
+    fun Completable.startAsync(): Disposable = subscribeOn(Schedulers.io()).subscribeByViewModel()
 }

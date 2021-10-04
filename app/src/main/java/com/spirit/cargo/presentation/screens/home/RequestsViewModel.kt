@@ -15,21 +15,21 @@ class RequestsViewModel(
 
     init {
         bindChanges(loadRequestsFlow.changes)
-        loadRequestsFlow().start()
+        loadRequestsFlow().startAsync()
     }
 
     override fun startDeleteRequestFlow(id: Int) {
-        deleteRequestFlow(id = id).start()
+        deleteRequestFlow(id = id).startAsync()
     }
 
     override fun startListeningRequestFlow(id: Int, turnOn: Boolean) {
-        switchRequestListeningFlow(id = id, turnOn = turnOn).start()
+        switchRequestListeningFlow(id = id, turnOn = turnOn).startAsync()
     }
 
     override fun startListeningRequestsFlow(ids: List<Int>, turnOn: Boolean) {
         Observable.fromIterable(ids)
             .flatMapCompletable { id -> switchRequestListeningFlow(id = id, turnOn = turnOn) }
-            .start()
+            .startAsync()
     }
 
     override fun startRequestCreationFlow(): Unit = run { navigateToCreateRequest().subscribe() }

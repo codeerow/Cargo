@@ -11,6 +11,6 @@ class CreateRequestViewModel(
     }
 
     override fun startCreateRequestFlow(title: String, url: String) {
-        createRequestFlow(title = title, url = url).start()
+        createRequestFlow(title = title, url = url).startAsync()
     }
 }
