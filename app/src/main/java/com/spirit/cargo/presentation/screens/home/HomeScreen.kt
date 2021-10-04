@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ScreenHomeBinding
-import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel.Model
+import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel.State
 import com.spirit.cargo.presentation.screens.home.list_item.RequestsAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,7 +36,8 @@ class HomeScreen : Fragment(R.layout.screen_home) {
     }
 
     private fun BaseRequestsViewModel.bind() {
-        entities.observeOn(AndroidSchedulers.mainThread())
+        state.observeOn(AndroidSchedulers.mainThread())
+            .map(State::items)
             .doOnNext(requestsAdapter::submitList)
             .doOnNext(::bindNoRequestHintVisibility)
             .doOnNext(::bindToggleAllButtonText)
@@ -47,7 +48,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
         noRequestsHint.isVisible = entities.isEmpty()
     }
 
-    private fun bindToggleAllButtonText(entities: List<Model>) = with(binding) {
+    private fun bindToggleAllButtonText(entities: List<BaseRequestsViewModel.RequestItem>) = with(binding) {
         val allIsActive = entities.all { it.isActive }
         toggleAll.setText(
             if (allIsActive) R.string.turn_off_each_one

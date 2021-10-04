@@ -1,7 +1,7 @@
 package com.spirit.cargo.presentation.screens.home.flows
 
-import com.spirit.cargo.domain.request.commands.DeleteRequest
+import com.spirit.cargo.domain.model.request.RequestRepository
 
-class DeleteRequestFlow(private val deleteRequest: DeleteRequest) {
-    operator fun invoke(id: Int) = deleteRequest(DeleteRequest.Params(id = id))
+class DeleteRequestFlow(private val requestRepository: RequestRepository) {
+    operator fun invoke(id: Int) = requestRepository.delete(id = id)
 }

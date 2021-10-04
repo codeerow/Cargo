@@ -11,7 +11,7 @@ class RequestViewHolder(
     private val binding: ListItemRequestBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: BaseRequestsViewModel.Model) = with(binding) {
+    fun bind(item: BaseRequestsViewModel.RequestItem) = with(binding) {
         with(title) {
             text = item.title
         }

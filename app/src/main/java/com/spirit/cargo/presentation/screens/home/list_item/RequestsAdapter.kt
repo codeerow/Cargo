@@ -11,8 +11,8 @@ class RequestsAdapter(
     private val onDeleteClick: (Int) -> Unit,
     private val onListenSwitch: (Int, Boolean) -> Unit
 ) : ListAdapter<
-        BaseRequestsViewModel.Model,
-        RequestViewHolder>(BaseRequestsViewModel.Model.diffCallback) {
+        BaseRequestsViewModel.RequestItem,
+        RequestViewHolder>(BaseRequestsViewModel.RequestItem.diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
         return RequestViewHolder(

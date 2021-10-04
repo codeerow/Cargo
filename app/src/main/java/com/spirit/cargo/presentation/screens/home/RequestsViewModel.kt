@@ -1,7 +1,7 @@
 package com.spirit.cargo.presentation.screens.home
 
+import com.spirit.cargo.domain.model.request.RequestRepository
 import com.spirit.cargo.domain.navigation.commands.NavigateToCreateRequest
-import com.spirit.cargo.domain.request.commands.ObserveRequests
 import com.spirit.cargo.presentation.screens.home.flows.DeleteRequestFlow
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import io.reactivex.rxjava3.core.Observable
@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class RequestsViewModel(
-    observeRequests: ObserveRequests,
+    requestRepository: RequestRepository,
     private val deleteRequestFlow: DeleteRequestFlow,
     private val switchRequestListeningFlow: SwitchRequestListeningFlow,
     private val navigateToCreateRequest: NavigateToCreateRequest
@@ -37,13 +37,13 @@ class RequestsViewModel(
     override fun startRequestCreationFlow(): Unit = run { navigateToCreateRequest().subscribe() }
 
 
-    override val entities: BehaviorSubject<List<Model>> = BehaviorSubject.createDefault(listOf())
+    override val state: BehaviorSubject<State> = BehaviorSubject.createDefault(State())
 
     init {
-        observeRequests()
+        requestRepository.observe()
             .observeOn(Schedulers.io())
-            .map { requests -> requests.map(Model::fromDomain) }
-            .doOnNext(entities::onNext)
+            .map { requests -> State(requests.map(RequestItem::fromDomain)) }
+            .doOnNext(state::onNext)
             .subscribe()
     }
 }

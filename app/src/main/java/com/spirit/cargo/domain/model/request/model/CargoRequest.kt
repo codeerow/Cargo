@@ -1,4 +1,4 @@
-package com.spirit.cargo.domain.request
+package com.spirit.cargo.domain.model.request.model
 
 data class CargoRequest(
     val id: Int,

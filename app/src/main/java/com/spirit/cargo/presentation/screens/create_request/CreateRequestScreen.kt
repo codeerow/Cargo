@@ -27,12 +27,11 @@ class CreateRequestScreen : Fragment(R.layout.screen_create_request) {
                 url = link.text.toString()
             )
         }
-
         viewModel.bind()
     }
 
     private fun BaseCreateRequestViewModel.bind() {
-        model.observeOn(AndroidSchedulers.mainThread())
+        state.observeOn(AndroidSchedulers.mainThread())
             .doOnNext { it.linkError?.let(::bindUrlError) }
             .subscribe()
     }

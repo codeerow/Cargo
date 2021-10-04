@@ -2,8 +2,8 @@ package com.spirit.cargo.app.persistence
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.spirit.cargo.data.request.RequestsDao
-import com.spirit.cargo.data.request.RoomRequestModel
+import com.spirit.cargo.data.request.model.RequestsDao
+import com.spirit.cargo.data.request.model.RoomRequestModel
 
 @Database(
     entities = [RoomRequestModel::class],

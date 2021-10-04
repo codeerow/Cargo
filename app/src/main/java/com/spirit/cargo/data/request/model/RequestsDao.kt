@@ -1,4 +1,4 @@
-package com.spirit.cargo.data.request
+package com.spirit.cargo.data.request.model
 
 import androidx.room.*
 import io.reactivex.rxjava3.core.Completable

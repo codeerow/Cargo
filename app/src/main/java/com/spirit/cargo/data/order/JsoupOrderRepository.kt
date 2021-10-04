@@ -1,23 +1,21 @@
 package com.spirit.cargo.data.order
 
-import com.spirit.cargo.domain.order.ReadOrders
+import com.spirit.cargo.domain.model.order.OrderRepository
 import io.reactivex.rxjava3.core.Single
 import org.jsoup.Jsoup
 
-class JsoupReadOrders : ReadOrders {
 
-    override fun invoke(params: ReadOrders.Params): Single<Int> {
-        return Single.create {
-            try {
-                val doc = loadDoc(params.url)
-                val ordersCount = doc.select("span[id=count_of_request_by_search]")
-                    .text()
-                    .toInt()
+class JsoupOrderRepository : OrderRepository {
+    override fun read(url: String): Single<Int> = Single.create {
+        try {
+            val doc = loadDoc(url)
+            val ordersCount = doc.select("span[id=count_of_request_by_search]")
+                .text()
+                .toInt()
 
-                it.onSuccess(ordersCount)
-            } catch (error: Throwable) {
-                it.onSuccess(0)
-            }
+            it.onSuccess(ordersCount)
+        } catch (error: Throwable) {
+            it.onSuccess(0)
         }
     }
 

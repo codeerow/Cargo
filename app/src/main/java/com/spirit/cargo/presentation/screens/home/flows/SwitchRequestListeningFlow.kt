@@ -2,8 +2,8 @@ package com.spirit.cargo.presentation.screens.home.flows
 
 import android.content.Context
 import android.content.Intent
-import com.spirit.cargo.domain.request.CargoRequest
-import com.spirit.cargo.domain.request.commands.ReadRequest
+import com.spirit.cargo.domain.model.request.RequestRepository
+import com.spirit.cargo.domain.model.request.model.CargoRequest
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoService
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoService.Companion.REQUEST_ID_EXTRA
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoService.Companion.REQUEST_TITLE_EXTRA
@@ -12,11 +12,11 @@ import com.spirit.cargo.presentation.services.RefreshOrdersInfoService.Companion
 import io.reactivex.rxjava3.core.Completable
 
 class SwitchRequestListeningFlow(
-    private val readRequest: ReadRequest,
+    private val requestRepository: RequestRepository,
     private val context: Context
 ) {
     operator fun invoke(id: Int, turnOn: Boolean): Completable {
-        return readRequest(ReadRequest.Params(id = id))
+        return requestRepository.read(id = id)
             .flatMapCompletable { request ->
                 Completable.fromAction {
                     if (turnOn) context.startService(request)

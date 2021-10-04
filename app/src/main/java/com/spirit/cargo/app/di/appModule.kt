@@ -6,13 +6,13 @@ import com.spirit.cargo.app.navigation.AACNavigation
 import com.spirit.cargo.app.navigation.commands.AACNavigateBackward
 import com.spirit.cargo.app.navigation.commands.AACNavigateToCreateRequest
 import com.spirit.cargo.app.persistence.AppDatabase
-import com.spirit.cargo.data.order.JsoupReadOrders
-import com.spirit.cargo.data.request.commands.*
+import com.spirit.cargo.data.order.JsoupOrderRepository
+import com.spirit.cargo.data.request.RoomRequestRepository
+import com.spirit.cargo.domain.model.order.OrderRepository
+import com.spirit.cargo.domain.model.request.RequestRepository
 import com.spirit.cargo.domain.navigation.Navigation
 import com.spirit.cargo.domain.navigation.commands.NavigateBackward
 import com.spirit.cargo.domain.navigation.commands.NavigateToCreateRequest
-import com.spirit.cargo.domain.order.ReadOrders
-import com.spirit.cargo.domain.request.commands.*
 import com.spirit.cargo.domain.validation.ValidateUrl
 import com.spirit.cargo.presentation.screens.create_request.BaseCreateRequestViewModel
 import com.spirit.cargo.presentation.screens.create_request.CreateRequestViewModel
@@ -42,18 +42,9 @@ val persistence = module {
     single { get<AppDatabase>().requestsDao() }
 }
 
-val network = module {
-    factory { JsoupReadOrders() }
-}
-
-val commands = module {
-    factory<CreateRequest> { RoomCreateRequest(dao = get()) }
-    factory<DeleteRequest> { RoomDeleteRequest(dao = get()) }
-    factory<ObserveRequests> { RoomObserveRequests(dao = get()) }
-    factory<UpdateRequest> { RoomUpdateRequest(dao = get()) }
-    factory<ReadRequest> { RoomReadRequest(dao = get()) }
-
-    factory<ReadOrders> { JsoupReadOrders() }
+val repositories = module {
+    factory<RequestRepository> { RoomRequestRepository(dao = get()) }
+    factory<OrderRepository> { JsoupOrderRepository() }
 }
 
 val validation = module {
@@ -63,21 +54,21 @@ val validation = module {
 val flows = module {
     factory {
         CreateRequestFlow(
-            createRequest = get(),
+            requestRepository = get(),
             validateUrl = get(),
             navigateBackward = get()
         )
     }
-    factory { DeleteRequestFlow(deleteRequest = get()) }
+    factory { DeleteRequestFlow(requestRepository = get()) }
     factory { (context: Context) ->
-        SwitchRequestListeningFlow(readRequest = get(), context = context)
+        SwitchRequestListeningFlow(requestRepository = get(), context = context)
     }
 }
 
 val viewModels = module {
     viewModel<BaseRequestsViewModel> { (context: Context) ->
         RequestsViewModel(
-            observeRequests = get(),
+            requestRepository = get(),
             deleteRequestFlow = get(),
             switchRequestListeningFlow = get { parametersOf(context) },
             navigateToCreateRequest = get()
@@ -86,8 +77,8 @@ val viewModels = module {
     viewModel<BaseCreateRequestViewModel> { CreateRequestViewModel(createRequestFlow = get()) }
     factory<BaseRefreshOrdersInfoViewModel> {
         RefreshOrdersInfoViewModel(
-            readOrders = get(),
-            readRequest = get()
+            requestRepository = get(),
+            orderRepository = get()
         )
     }
 }
@@ -99,4 +90,4 @@ val navigation = module {
     factory<NavigateToCreateRequest> { AACNavigateToCreateRequest(navigationHolder = get()) }
 }
 
-val app = persistence + network + commands + flows + viewModels + validation + navigation
+val app = persistence + repositories + flows + viewModels + validation + navigation

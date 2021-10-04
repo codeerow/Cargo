@@ -1,8 +1,8 @@
-package com.spirit.cargo.data.request
+package com.spirit.cargo.data.request.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.spirit.cargo.domain.request.CargoRequest
+import com.spirit.cargo.domain.model.request.model.CargoRequest
 
 @Entity
 data class RoomRequestModel(

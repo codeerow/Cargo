@@ -10,7 +10,7 @@ class AACNavigateToCreateRequest(private val navigationHolder: AACNavigation) :
     NavigateToCreateRequest {
 
     override fun invoke(): Completable = with(navigationHolder) {
-        return Completable.fromAction { navController.navigate(R.id.action_FirstFragment_to_SecondFragment) }
+        return Completable.fromAction { navController.navigate(R.id.action_HomeScreen_to_CreateRequestScreen) }
             .subscribeOn(AndroidSchedulers.mainThread())
     }
 }
