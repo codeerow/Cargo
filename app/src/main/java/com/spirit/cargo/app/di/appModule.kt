@@ -1,11 +1,18 @@
 package com.spirit.cargo.app.di
 
 import androidx.room.Room
+import com.spirit.cargo.app.navigation.AACNavigation
+import com.spirit.cargo.app.navigation.commands.AACNavigateBackward
 import com.spirit.cargo.app.persistence.AppDatabase
 import com.spirit.cargo.data.order.JsoupReadOrders
 import com.spirit.cargo.data.request.commands.*
 import com.spirit.cargo.domain.order.ReadOrders
 import com.spirit.cargo.domain.request.commands.*
+import com.spirit.cargo.domain.validation.ValidateUrl
+import com.spirit.cargo.domain.navigation.Navigation
+import com.spirit.cargo.domain.navigation.commands.NavigateBackward
+import com.spirit.cargo.presentation.screens.create_request.BaseCreateRequestViewModel
+import com.spirit.cargo.presentation.screens.create_request.CreateRequestViewModel
 import com.spirit.cargo.presentation.screens.create_request.flows.CreateRequestFlow
 import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel
 import com.spirit.cargo.presentation.screens.home.RequestsViewModel
@@ -15,6 +22,7 @@ import com.spirit.cargo.presentation.services.BaseRefreshOrdersInfoViewModel
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val persistence = module {
@@ -44,14 +52,25 @@ val commands = module {
     factory<ReadOrders> { JsoupReadOrders() }
 }
 
+val validation = module {
+    factory { ValidateUrl() }
+}
+
 val flows = module {
-    factory { CreateRequestFlow(createRequest = get()) }
+    factory {
+        CreateRequestFlow(
+            createRequest = get(),
+            validateUrl = get(),
+            navigateBackward = get()
+        )
+    }
     factory { DeleteRequestFlow(deleteRequest = get()) }
     factory { SwitchRequestListeningFlow(readRequest = get(), readOrders = get()) }
 }
 
 val viewModels = module {
     viewModel<BaseRequestsViewModel> { RequestsViewModel(observeRequests = get()) }
+    viewModel<BaseCreateRequestViewModel> { CreateRequestViewModel(createRequestFlow = get()) }
     factory<BaseRefreshOrdersInfoViewModel> {
         RefreshOrdersInfoViewModel(
             readOrders = get(),
@@ -60,4 +79,9 @@ val viewModels = module {
     }
 }
 
-val app = persistence + network + commands + flows + viewModels
+val navigation = module {
+    single { AACNavigation() }.binds(arrayOf(Navigation::class, AACNavigation::class))
+    factory<NavigateBackward> { AACNavigateBackward(navigationHolder = get()) }
+}
+
+val app = persistence + network + commands + flows + viewModels + validation + navigation

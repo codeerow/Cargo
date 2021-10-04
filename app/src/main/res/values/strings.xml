@@ -12,4 +12,7 @@
     <string name="orders_count">Orders count: %d</string>
 
     <string name="total_orders_count">Total orders count: %d</string>
+
+    <!-- data -->
+    <string name="validation_error_url_should_not_be_empty">Url should not be empty</string>
 </resources>

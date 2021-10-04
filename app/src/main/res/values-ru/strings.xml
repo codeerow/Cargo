@@ -13,4 +13,7 @@
     <string name="orders_count">Количество заказов: %d</string>
 
     <string name="total_orders_count">Общее количество заказов: %d</string>
+
+    <!-- data -->
+    <string name="validation_error_url_should_not_be_empty">Ссылка не должна быть пустой</string>
 </resources>

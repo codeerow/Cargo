@@ -6,7 +6,6 @@ import com.spirit.cargo.domain.request.commands.DeleteRequest
 import io.reactivex.rxjava3.core.Completable
 
 class RoomDeleteRequest(private val dao: RequestsDao) : DeleteRequest {
-
     override fun invoke(params: DeleteRequest.Params): Completable {
         return dao.delete(
             RoomRequestModel(
