@@ -4,39 +4,26 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ScreenHomeBinding
 import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel.Model
-import com.spirit.cargo.presentation.screens.home.flows.DeleteRequestFlow
-import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import com.spirit.cargo.presentation.screens.home.list_item.RequestsAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class HomeScreen : Fragment(R.layout.screen_home) {
 
-    private val viewModel by viewModel<BaseRequestsViewModel>()
-    private val deleteRequestFlow by inject<DeleteRequestFlow>()
-    private val switchRequestListeningFlow by inject<SwitchRequestListeningFlow>()
+    private val viewModel by viewModel<BaseRequestsViewModel> { parametersOf(requireContext()) }
 
     private val binding by viewBinding(ScreenHomeBinding::bind)
-    private val requestsAdapter = RequestsAdapter(
-        onDeleteClick = { requestId ->
-            deleteRequestFlow(id = requestId)
-                .subscribeOn(Schedulers.io())
-                .subscribe()
-        },
-
-        onListenSwitch = { requestId, turnOn ->
-            switchRequestListeningFlow(id = requestId, turnOn = turnOn, context = requireActivity())
-                .subscribeOn(Schedulers.io())
-                .subscribe()
-        })
+    private val requestsAdapter by lazy {
+        RequestsAdapter(
+            onDeleteClick = viewModel::startDeleteRequestFlow,
+            onListenSwitch = viewModel::startListeningRequestFlow
+        )
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
@@ -45,9 +32,7 @@ class HomeScreen : Fragment(R.layout.screen_home) {
         requests.adapter = requestsAdapter
         viewModel.bind()
 
-        fab.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
+        createNewRequest.setOnClickListener { viewModel.startRequestCreationFlow() }
     }
 
     private fun BaseRequestsViewModel.bind() {
@@ -70,14 +55,10 @@ class HomeScreen : Fragment(R.layout.screen_home) {
         )
 
         toggleAll.setOnClickListener {
-            Observable.fromIterable(entities)
-                .flatMapCompletable {
-                    switchRequestListeningFlow(
-                        id = it.id,
-                        turnOn = !allIsActive,
-                        context = requireActivity()
-                    )
-                }.subscribeOn(Schedulers.io()).subscribe()
+            viewModel.startListeningRequestsFlow(
+                ids = entities.map { it.id },
+                turnOn = !allIsActive
+            )
         }
     }
 }

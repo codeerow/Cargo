@@ -2,7 +2,6 @@ package com.spirit.cargo.presentation.screens.home.flows
 
 import android.content.Context
 import android.content.Intent
-import com.spirit.cargo.domain.order.ReadOrders
 import com.spirit.cargo.domain.request.CargoRequest
 import com.spirit.cargo.domain.request.commands.ReadRequest
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoService
@@ -14,15 +13,15 @@ import io.reactivex.rxjava3.core.Completable
 
 class SwitchRequestListeningFlow(
     private val readRequest: ReadRequest,
-    private val readOrders: ReadOrders
+    private val context: Context
 ) {
-    operator fun invoke(id: Int, turnOn: Boolean, context: Context): Completable {
+    operator fun invoke(id: Int, turnOn: Boolean): Completable {
         return readRequest(ReadRequest.Params(id = id))
             .flatMapCompletable { request ->
-                readOrders(ReadOrders.Params(request.url)).doOnSuccess {
+                Completable.fromAction {
                     if (turnOn) context.startService(request)
                     else context.stopService(request)
-                }.ignoreElement()
+                }
             }
     }
 

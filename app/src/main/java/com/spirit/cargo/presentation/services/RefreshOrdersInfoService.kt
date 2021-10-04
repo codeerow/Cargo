@@ -22,17 +22,6 @@ class RefreshOrdersInfoService : Service() {
         return null
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        createNotificationChannel()
-        val notification = buildNotification()
-        startForeground(ONGOING_NOTIFICATION_ID, notification)
-
-        disposables = viewModel.entities
-            .doOnNext(::updateNotification)
-            .subscribe()
-    }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val requestId = intent?.extras?.getInt(REQUEST_ID_EXTRA)
 
@@ -43,6 +32,15 @@ class RefreshOrdersInfoService : Service() {
                 stopForeground(true)
             }
         } else {
+            if (!viewModel.hasRegisteredIds()) {
+                createNotificationChannel()
+                val notification = buildNotification()
+                startForeground(ONGOING_NOTIFICATION_ID, notification)
+
+                disposables = viewModel.entities
+                    .doOnNext(::updateNotification)
+                    .subscribe()
+            }
             requestId?.let(viewModel::registerRequestId)
         }
         return START_NOT_STICKY

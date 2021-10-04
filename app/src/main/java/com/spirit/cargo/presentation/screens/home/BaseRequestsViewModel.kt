@@ -6,6 +6,12 @@ import com.spirit.cargo.domain.request.CargoRequest
 import io.reactivex.rxjava3.core.Observable
 
 abstract class BaseRequestsViewModel : ViewModel() {
+
+    abstract fun startDeleteRequestFlow(id: Int)
+    abstract fun startListeningRequestFlow(id: Int, turnOn: Boolean)
+    abstract fun startListeningRequestsFlow(ids: List<Int>, turnOn: Boolean)
+    abstract fun startRequestCreationFlow()
+
     abstract val entities: Observable<List<Model>>
 
     data class Model(
