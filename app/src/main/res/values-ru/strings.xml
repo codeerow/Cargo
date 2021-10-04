@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Перевозки</string>
+
+    <string name="create_request_hint">Скопируй ссылку сюда</string>
+    <string name="title_hint">Название (Могилёв-Минск до 1т, до 5м3)</string>
+    <string name="create">Создать</string>
+
+    <string name="no_requests_hint">У тебя ещё нету запросов. Создай новую через кнопку внизу экрана.</string>
+    <string name="turn_on_each_one">Включить всё</string>
+    <string name="turn_off_each_one">Выключить всё</string>
+
+    <string name="orders_count">Количество заказов: %d</string>
+
+    <string name="total_orders_count">Общее количество заказов: %d</string>
+</resources>

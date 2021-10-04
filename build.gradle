@@ -1,0 +1,53 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.2"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    compileSdkVersion = 30
+    minSdkVersion = 23
+    targetSdkVersion = 30
+    buildToolsVersion = "30.0.3"
+
+    dependencies = [:]
+
+    dependencies.kotlinStdlib = 'org.jetbrains.kotlin:kotlin-stdlib'
+
+    dependencies.viewBinding = 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.4'
+
+    /* ReactiveX */
+    dependencies.rxJava = 'io.reactivex.rxjava3:rxjava:3.0.12'
+    dependencies.rxAndroid = 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    dependencies.rxBinding = 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+
+    /* DI */
+    dependencies.koinAndroid = 'io.insert-koin:koin-android:3.0.1'
+    dependencies.koinTest = 'io.insert-koin:koin-test:3.0.1'
+
+    /* Logging */
+    dependencies.timber = 'com.jakewharton.timber:timber:4.7.1'
+    dependencies.httpLogging = 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+    /* Networking */
+    dependencies.retrofit = 'com.squareup.retrofit2:retrofit:2.9.0'
+    dependencies.retrofitScalars = 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    dependencies.retrofitRxJavaAdapter = 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    dependencies.retrofitConverterGson = 'com.squareup.retrofit2:converter-gson:2.9.0'
+    dependencies.gson = 'com.google.code.gson:gson:2.8.6'
+    dependencies.okio = 'com.squareup.okio:okio:2.9.0'
+    dependencies.okhttp = 'com.squareup.okhttp3:okhttp:4.9.0'
+}

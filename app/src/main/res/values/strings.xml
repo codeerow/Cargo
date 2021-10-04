@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Cargo</string>
+
+    <string name="create_request_hint">Pass link here</string>
+    <string name="title_hint">Title</string>
+    <string name="create">Create</string>
+
+    <string name="no_requests_hint">You have no any requests yet. Create new ones using button at the bottom.</string>
+    <string name="turn_on_each_one">Turn on all</string>
+    <string name="turn_off_each_one">Turn off all</string>
+
+    <string name="orders_count">Orders count: %d</string>
+
+    <string name="total_orders_count">Total orders count: %d</string>
+</resources>
