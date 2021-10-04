@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ScreenHomeBinding
+import com.spirit.cargo.presentation.core.subscribe
 import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel.State
 import com.spirit.cargo.presentation.screens.home.list_item.RequestsAdapter
+import com.spirit.cargo.presentation.screens.home.model.RequestItem
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -41,14 +43,14 @@ class HomeScreen : Fragment(R.layout.screen_home) {
             .doOnNext(requestsAdapter::submitList)
             .doOnNext(::bindNoRequestHintVisibility)
             .doOnNext(::bindToggleAllButtonText)
-            .subscribe()
+            .subscribe(viewLifecycleOwner)
     }
 
     private fun bindNoRequestHintVisibility(entities: List<*>) = with(binding) {
         noRequestsHint.isVisible = entities.isEmpty()
     }
 
-    private fun bindToggleAllButtonText(entities: List<BaseRequestsViewModel.RequestItem>) = with(binding) {
+    private fun bindToggleAllButtonText(entities: List<RequestItem>) = with(binding) {
         val allIsActive = entities.all { it.isActive }
         toggleAll.setText(
             if (allIsActive) R.string.turn_off_each_one

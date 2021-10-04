@@ -68,4 +68,6 @@ dependencies {
     /* Rx */
     implementation rootProject.ext.dependencies.rxAndroid
     implementation rootProject.ext.dependencies.rxJava
+
+    implementation rootProject.ext.dependencies.timber
 }

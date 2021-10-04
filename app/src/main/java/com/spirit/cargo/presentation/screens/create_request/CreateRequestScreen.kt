@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ScreenCreateRequestBinding
+import com.spirit.cargo.presentation.core.subscribe
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,7 +34,7 @@ class CreateRequestScreen : Fragment(R.layout.screen_create_request) {
     private fun BaseCreateRequestViewModel.bind() {
         state.observeOn(AndroidSchedulers.mainThread())
             .doOnNext { it.linkError?.let(::bindUrlError) }
-            .subscribe()
+            .subscribe(viewLifecycleOwner)
     }
 
     private fun bindUrlError(errorRes: Int) {

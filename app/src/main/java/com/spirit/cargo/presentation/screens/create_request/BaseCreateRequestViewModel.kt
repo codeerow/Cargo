@@ -1,22 +1,28 @@
 package com.spirit.cargo.presentation.screens.create_request
 
-import androidx.lifecycle.ViewModel
-import com.spirit.cargo.presentation.core.Changes
-import io.reactivex.rxjava3.core.Observable
+import com.spirit.cargo.presentation.core.Change
+import com.spirit.cargo.presentation.core.StateFullViewModel
 
 
-abstract class BaseCreateRequestViewModel : ViewModel() {
+abstract class BaseCreateRequestViewModel :
+    StateFullViewModel<BaseCreateRequestViewModel.State>(initialState = State()) {
 
-    data class State(val linkError: Int? = null)
-
-    abstract val state: Observable<State>
-
+    data class State(
+        val linkError: Int? = null,
+        val isLoading: Boolean = false
+    )
 
     abstract fun startCreateRequestFlow(title: String, url: String)
 
-    class ErrorChanges(private val urlValidationError: Int) : Changes<State> {
+    class ErrorChange(private val urlValidationError: Int) : Change<State> {
         override fun invoke(subject: State): State {
-            return subject.copy(linkError = urlValidationError)
+            return subject.copy(linkError = urlValidationError, isLoading = false)
+        }
+    }
+
+    class LoadingChange : Change<State> {
+        override fun invoke(subject: State): State {
+            return subject.copy(isLoading = true, linkError = null)
         }
     }
 }

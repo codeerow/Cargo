@@ -20,6 +20,7 @@ import com.spirit.cargo.presentation.screens.create_request.flows.CreateRequestF
 import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel
 import com.spirit.cargo.presentation.screens.home.RequestsViewModel
 import com.spirit.cargo.presentation.screens.home.flows.DeleteRequestFlow
+import com.spirit.cargo.presentation.screens.home.flows.LoadRequestsFlow
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import com.spirit.cargo.presentation.services.BaseRefreshOrdersInfoViewModel
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoViewModel
@@ -60,6 +61,7 @@ val flows = module {
         )
     }
     factory { DeleteRequestFlow(requestRepository = get()) }
+    factory { LoadRequestsFlow(requestRepository = get()) }
     factory { (context: Context) ->
         SwitchRequestListeningFlow(requestRepository = get(), context = context)
     }
@@ -68,7 +70,7 @@ val flows = module {
 val viewModels = module {
     viewModel<BaseRequestsViewModel> { (context: Context) ->
         RequestsViewModel(
-            requestRepository = get(),
+            loadRequestsFlow = get(),
             deleteRequestFlow = get(),
             switchRequestListeningFlow = get { parametersOf(context) },
             navigateToCreateRequest = get()

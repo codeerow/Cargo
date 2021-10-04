@@ -3,7 +3,7 @@ package com.spirit.cargo.presentation.screens.home.list_item
 import androidx.recyclerview.widget.RecyclerView
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ListItemRequestBinding
-import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel
+import com.spirit.cargo.presentation.screens.home.model.RequestItem
 
 class RequestViewHolder(
     private val onDeleteClick: (Int) -> Unit,
@@ -11,7 +11,7 @@ class RequestViewHolder(
     private val binding: ListItemRequestBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: BaseRequestsViewModel.RequestItem) = with(binding) {
+    fun bind(item: RequestItem) = with(binding) {
         with(title) {
             text = item.title
         }
