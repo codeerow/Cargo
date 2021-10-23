@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-
 class RefreshOrdersInfoViewModel(
     private val requestRepository: RequestRepository,
     private val orderRepository: OrderRepository

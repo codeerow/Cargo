@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import com.spirit.cargo.data.request.model.RequestsDao
 import com.spirit.cargo.data.request.model.RoomRequestModel
 
-
 @Database(
     entities = [RoomRequestModel::class],
     version = 1,

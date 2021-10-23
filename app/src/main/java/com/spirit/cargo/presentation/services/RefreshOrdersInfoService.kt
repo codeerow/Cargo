@@ -12,7 +12,6 @@ import com.spirit.cargo.presentation.MainActivity
 import io.reactivex.rxjava3.disposables.Disposable
 import org.koin.android.ext.android.inject
 
-
 class RefreshOrdersInfoService : Service() {
 
     private val viewModel by inject<BaseRefreshOrdersInfoViewModel>()

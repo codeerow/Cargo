@@ -7,7 +7,6 @@ import com.spirit.cargo.domain.model.request.model.CargoRequest
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
-
 class RoomRequestRepository(private val dao: RequestsDao) : RequestRepository {
     override fun create(title: String, url: String) = dao.create(
         RoomRequestModel(

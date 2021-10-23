@@ -4,7 +4,6 @@ import com.spirit.cargo.presentation.core.Change
 import com.spirit.cargo.presentation.core.StateFullViewModel
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
 
-
 abstract class BaseRequestsViewModel : StateFullViewModel<BaseRequestsViewModel.State>(initialState = State()) {
 
     abstract fun startDeleteRequestFlow(id: Int)

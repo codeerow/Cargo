@@ -3,7 +3,6 @@ package com.spirit.cargo.presentation.screens.create_request
 import com.spirit.cargo.presentation.core.Change
 import com.spirit.cargo.presentation.core.StateFullViewModel
 
-
 abstract class BaseCreateRequestViewModel :
     StateFullViewModel<BaseCreateRequestViewModel.State>(initialState = State()) {
 

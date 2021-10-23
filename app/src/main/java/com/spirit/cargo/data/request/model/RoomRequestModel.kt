@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.spirit.cargo.domain.model.request.model.CargoRequest
 
-
 @Entity
 data class RoomRequestModel(
     @PrimaryKey(autoGenerate = true)

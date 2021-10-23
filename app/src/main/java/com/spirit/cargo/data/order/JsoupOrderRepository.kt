@@ -4,7 +4,6 @@ import com.spirit.cargo.domain.model.order.OrderRepository
 import io.reactivex.rxjava3.core.Single
 import org.jsoup.Jsoup
 
-
 class JsoupOrderRepository : OrderRepository {
     override fun read(url: String): Single<Int> = Single.create {
         try {

@@ -30,7 +30,6 @@ import org.koin.core.parameter.parametersOf
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
-
 val persistence = module {
     val databaseName = "application_db"
     single {

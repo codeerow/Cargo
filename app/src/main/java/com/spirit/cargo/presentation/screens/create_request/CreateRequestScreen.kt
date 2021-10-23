@@ -11,7 +11,6 @@ import com.spirit.cargo.utils.subscribe
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class CreateRequestScreen : Fragment(R.layout.screen_create_request) {
 
     private val viewModel by viewModel<BaseCreateRequestViewModel>()

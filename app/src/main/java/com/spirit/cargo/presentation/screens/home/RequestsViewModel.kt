@@ -6,7 +6,6 @@ import com.spirit.cargo.presentation.screens.home.flows.LoadRequestsFlow
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import io.reactivex.rxjava3.core.Observable
 
-
 class RequestsViewModel(
     loadRequestsFlow: LoadRequestsFlow,
     private val deleteRequestFlow: DeleteRequestFlow,

@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import timber.log.Timber
 
-
 fun <T : Any> Observable<T>.subscribe(
     lifecycleOwner: LifecycleOwner,
     onNext: (T) -> Unit = {},

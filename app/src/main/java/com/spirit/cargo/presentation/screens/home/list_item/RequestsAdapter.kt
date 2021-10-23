@@ -7,7 +7,6 @@ import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ListItemRequestBinding
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
 
-
 class RequestsAdapter(
     private val onDeleteClick: (Int) -> Unit,
     private val onListenSwitch: (Int, Boolean) -> Unit
