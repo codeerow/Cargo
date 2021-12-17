@@ -9,7 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ActivityMainBinding
-import com.spirit.cargo.domain.navigation.Navigation
+import com.spirit.cargo.domain.core.navigation.Navigation
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {

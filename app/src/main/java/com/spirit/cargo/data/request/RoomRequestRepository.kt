@@ -2,8 +2,8 @@ package com.spirit.cargo.data.request
 
 import com.spirit.cargo.data.request.model.RequestsDao
 import com.spirit.cargo.data.request.model.RoomRequestModel
-import com.spirit.cargo.domain.model.request.RequestRepository
-import com.spirit.cargo.domain.model.request.model.CargoRequest
+import com.spirit.cargo.domain.request.CargoRequest
+import com.spirit.cargo.domain.request.RequestRepository
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 

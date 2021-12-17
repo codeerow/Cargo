@@ -7,7 +7,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import com.spirit.cargo.R
-import com.spirit.cargo.domain.navigation.Navigation
+import com.spirit.cargo.domain.core.navigation.Navigation
 import com.spirit.cargo.utils.doNothing
 
 class AACNavigation : Navigation<AppCompatActivity> {

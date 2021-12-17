@@ -1,8 +1,8 @@
 package com.spirit.cargo.presentation.services
 
-import com.spirit.cargo.domain.model.order.OrderRepository
-import com.spirit.cargo.domain.model.request.RequestRepository
-import com.spirit.cargo.domain.model.request.model.CargoRequest
+import com.spirit.cargo.domain.order.OrderDataSource
+import com.spirit.cargo.domain.request.CargoRequest
+import com.spirit.cargo.domain.request.RequestRepository
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -11,14 +11,14 @@ import java.util.concurrent.TimeUnit
 
 class RefreshOrdersInfoViewModel(
     private val requestRepository: RequestRepository,
-    private val orderRepository: OrderRepository
-) : BaseRefreshOrdersInfoViewModel() {
+    private val orderDataSource: OrderDataSource
+) : BaseRefreshOrdersInfoViewModel {
 
     private val requestsIds = mutableSetOf<Int>()
     private val requestsIdsSubject: PublishSubject<Set<Int>> = PublishSubject.create()
 
     override val entities: Observable<List<CargoRequest>> = Observable.combineLatest(
-        Observable.interval(5, TimeUnit.SECONDS, Schedulers.io()),
+        Observable.interval(REFRESH_PERIOD, TimeUnit.SECONDS, Schedulers.io()),
         requestsIdsSubject.observeOn(Schedulers.io())
     ) { _, ids -> ids }
         .switchMapSingle { ids ->
@@ -34,6 +34,7 @@ class RefreshOrdersInfoViewModel(
     }
 
     override fun unregisterRequestId(id: Int) {
+
         requestsIds.remove(id)
         requestsIdsSubject.onNext(requestsIds)
     }
@@ -43,7 +44,7 @@ class RefreshOrdersInfoViewModel(
 
     private fun readOrdersInfoForEach(requests: List<CargoRequest>) =
         Observable.fromIterable(requests).flatMapSingle { request ->
-            orderRepository.read(url = request.url)
+            orderDataSource.read(url = request.url)
                 .onErrorResumeNext { Single.just(0) }
                 .map { ordersCount ->
                     CargoRequest(
@@ -55,4 +56,8 @@ class RefreshOrdersInfoViewModel(
                     )
                 }
         }.toList()
+
+    companion object {
+        private const val REFRESH_PERIOD: Long = 5
+    }
 }

@@ -1,13 +1,17 @@
 package com.spirit.cargo.presentation.services
 
-import android.app.*
+import android.app.PendingIntent
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.spirit.cargo.R
-import com.spirit.cargo.domain.model.request.model.CargoRequest
+import com.spirit.cargo.domain.request.CargoRequest
 import com.spirit.cargo.presentation.MainActivity
 import io.reactivex.rxjava3.disposables.Disposable
 import org.koin.android.ext.android.inject

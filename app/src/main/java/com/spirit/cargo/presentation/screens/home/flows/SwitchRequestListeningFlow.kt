@@ -2,8 +2,8 @@ package com.spirit.cargo.presentation.screens.home.flows
 
 import android.content.Context
 import android.content.Intent
-import com.spirit.cargo.domain.model.request.RequestRepository
-import com.spirit.cargo.domain.model.request.model.CargoRequest
+import com.spirit.cargo.domain.request.CargoRequest
+import com.spirit.cargo.domain.request.RequestRepository
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoService
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoService.Companion.REQUEST_ID_EXTRA
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoService.Companion.REQUEST_TITLE_EXTRA

@@ -17,6 +17,6 @@
 
     <fragment
         android:id="@+id/CreateRequestScreen"
-        android:name="com.spirit.cargo.presentation.screens.create_request.CreateRequestScreen"
+        android:name="com.spirit.cargo.presentation.screens.createRequest.CreateRequestScreen"
         tools:layout="@layout/screen_create_request" />
 </navigation>

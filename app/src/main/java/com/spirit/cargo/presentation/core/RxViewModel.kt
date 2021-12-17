@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
 /**
@@ -35,7 +36,7 @@ open class RxViewModel : ViewModel() {
      * Subscription utils. Holds disposables and clears them when ViewModel
      * destroying.
      * */
-    fun <T : Any> Single<T>.subscribeByViewModel(
+    protected fun <T : Any> Single<T>.subscribeByViewModel(
         onError: (Throwable) -> Unit = Timber::e,
         onSuccess: (T) -> Unit = {},
     ): Disposable {
@@ -44,7 +45,7 @@ open class RxViewModel : ViewModel() {
             .bindToLifecycle()
     }
 
-    fun <T : Any> Single<T>.subscribeByViewModel(
+    protected fun <T : Any> Single<T>.subscribeByViewModel(
         onSuccess: (T) -> Unit = {},
     ): Disposable {
         return this
@@ -52,7 +53,7 @@ open class RxViewModel : ViewModel() {
             .bindToLifecycle()
     }
 
-    fun <T : Any> Maybe<T>.subscribeByViewModel(
+    protected fun <T : Any> Maybe<T>.subscribeByViewModel(
         onError: (Throwable) -> Unit = Timber::e,
         onSuccess: (T) -> Unit = {},
     ): Disposable {
@@ -61,7 +62,7 @@ open class RxViewModel : ViewModel() {
             .bindToLifecycle()
     }
 
-    fun Completable.subscribeByViewModel(
+    protected fun Completable.subscribeByViewModel(
         onError: (Throwable) -> Unit = Timber::e,
         onComplete: () -> Unit = {},
     ): Disposable {
@@ -69,11 +70,15 @@ open class RxViewModel : ViewModel() {
             .bindToLifecycle()
     }
 
-    fun <T : Any> Observable<T>.subscribeByViewModel(
+    protected fun <T : Any> Observable<T>.subscribeByViewModel(
         onError: (Throwable) -> Unit = {},
         onNext: (T) -> Unit = {},
     ): Disposable {
         return this.subscribe(onNext, onError)
             .bindToLifecycle()
     }
+
+    protected fun Completable.startAsync() = subscribeOn(Schedulers.io()).subscribeByViewModel()
+    protected fun <T : Any> Single<T>.startAsync() = subscribeOn(Schedulers.io()).subscribeByViewModel()
+    protected fun <T : Any> Observable<T>.startAsync() = subscribeOn(Schedulers.io()).subscribeByViewModel()
 }

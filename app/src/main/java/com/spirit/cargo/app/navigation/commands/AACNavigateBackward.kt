@@ -1,7 +1,7 @@
 package com.spirit.cargo.app.navigation.commands
 
 import com.spirit.cargo.app.navigation.AACNavigation
-import com.spirit.cargo.domain.navigation.commands.NavigateBackward
+import com.spirit.cargo.domain.core.navigation.commands.NavigateBackward
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 

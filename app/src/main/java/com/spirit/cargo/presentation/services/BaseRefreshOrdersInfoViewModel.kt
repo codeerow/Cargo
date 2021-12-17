@@ -1,12 +1,12 @@
 package com.spirit.cargo.presentation.services
 
-import com.spirit.cargo.domain.model.request.model.CargoRequest
+import com.spirit.cargo.domain.request.CargoRequest
 import io.reactivex.rxjava3.core.Observable
 
-abstract class BaseRefreshOrdersInfoViewModel {
-    abstract val entities: Observable<List<CargoRequest>>
+interface BaseRefreshOrdersInfoViewModel {
+    val entities: Observable<List<CargoRequest>>
 
-    abstract fun registerRequestId(id: Int)
-    abstract fun unregisterRequestId(id: Int)
-    abstract fun hasRegisteredIds(): Boolean
+    fun registerRequestId(id: Int)
+    fun unregisterRequestId(id: Int)
+    fun hasRegisteredIds(): Boolean
 }

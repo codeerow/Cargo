@@ -6,21 +6,19 @@ import com.spirit.cargo.app.navigation.AACNavigation
 import com.spirit.cargo.app.navigation.commands.AACNavigateBackward
 import com.spirit.cargo.app.navigation.commands.AACNavigateToCreateRequest
 import com.spirit.cargo.app.persistence.AppDatabase
-import com.spirit.cargo.data.order.JsoupOrderRepository
+import com.spirit.cargo.data.order.JsoupOrderDataSource
 import com.spirit.cargo.data.request.RoomRequestRepository
-import com.spirit.cargo.domain.model.order.OrderRepository
-import com.spirit.cargo.domain.model.request.RequestRepository
-import com.spirit.cargo.domain.navigation.Navigation
-import com.spirit.cargo.domain.navigation.commands.NavigateBackward
-import com.spirit.cargo.domain.navigation.commands.NavigateToCreateRequest
-import com.spirit.cargo.domain.validation.ValidateUrl
-import com.spirit.cargo.presentation.screens.create_request.BaseCreateRequestViewModel
-import com.spirit.cargo.presentation.screens.create_request.CreateRequestViewModel
-import com.spirit.cargo.presentation.screens.create_request.flows.CreateRequestFlow
+import com.spirit.cargo.domain.order.OrderDataSource
+import com.spirit.cargo.domain.request.RequestRepository
+import com.spirit.cargo.domain.core.navigation.Navigation
+import com.spirit.cargo.domain.core.navigation.commands.NavigateBackward
+import com.spirit.cargo.domain.core.navigation.commands.NavigateToCreateRequest
+import com.spirit.cargo.domain.core.validation.ValidateUrl
+import com.spirit.cargo.presentation.screens.createRequest.BaseCreateRequestViewModel
+import com.spirit.cargo.presentation.screens.createRequest.CreateRequestViewModel
+import com.spirit.cargo.presentation.screens.createRequest.flows.CreateRequestFlow
 import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel
 import com.spirit.cargo.presentation.screens.home.RequestsViewModel
-import com.spirit.cargo.presentation.screens.home.flows.DeleteRequestFlow
-import com.spirit.cargo.presentation.screens.home.flows.LoadRequestsFlow
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import com.spirit.cargo.presentation.services.BaseRefreshOrdersInfoViewModel
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoViewModel
@@ -45,7 +43,7 @@ val persistence = module {
 
 val repositories = module {
     factory<RequestRepository> { RoomRequestRepository(dao = get()) }
-    factory<OrderRepository> { JsoupOrderRepository() }
+    factory<OrderDataSource> { JsoupOrderDataSource() }
 }
 
 val validation = module {
@@ -60,8 +58,6 @@ val flows = module {
             navigateBackward = get()
         )
     }
-    factory { DeleteRequestFlow(requestRepository = get()) }
-    factory { LoadRequestsFlow(requestRepository = get()) }
     factory { (context: Context) ->
         SwitchRequestListeningFlow(requestRepository = get(), context = context)
     }
@@ -70,8 +66,7 @@ val flows = module {
 val viewModels = module {
     viewModel<BaseRequestsViewModel> { (context: Context) ->
         RequestsViewModel(
-            loadRequestsFlow = get(),
-            deleteRequestFlow = get(),
+            requestRepository = get(),
             switchRequestListeningFlow = get { parametersOf(context) },
             navigateToCreateRequest = get()
         )
@@ -80,7 +75,7 @@ val viewModels = module {
     factory<BaseRefreshOrdersInfoViewModel> {
         RefreshOrdersInfoViewModel(
             requestRepository = get(),
-            orderRepository = get()
+            orderDataSource = get()
         )
     }
 }

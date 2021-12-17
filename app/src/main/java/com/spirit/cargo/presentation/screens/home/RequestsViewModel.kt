@@ -1,32 +1,36 @@
 package com.spirit.cargo.presentation.screens.home
 
-import com.spirit.cargo.domain.navigation.commands.NavigateToCreateRequest
-import com.spirit.cargo.presentation.screens.home.flows.DeleteRequestFlow
-import com.spirit.cargo.presentation.screens.home.flows.LoadRequestsFlow
+import com.spirit.cargo.domain.core.navigation.commands.NavigateToCreateRequest
+import com.spirit.cargo.domain.request.RequestRepository
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
+import com.spirit.cargo.presentation.screens.home.model.RequestItem
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class RequestsViewModel(
-    loadRequestsFlow: LoadRequestsFlow,
-    private val deleteRequestFlow: DeleteRequestFlow,
+    private val requestRepository: RequestRepository,
     private val switchRequestListeningFlow: SwitchRequestListeningFlow,
     private val navigateToCreateRequest: NavigateToCreateRequest
 ) : BaseRequestsViewModel() {
 
+    override val items: BehaviorSubject<List<RequestItem>> = BehaviorSubject.createDefault(listOf())
+
     init {
-        bindChanges(loadRequestsFlow.changes)
-        loadRequestsFlow().startAsync()
+        requestRepository.observe().map { it.map(RequestItem::fromDomain) }
+            .doOnNext(items::onNext)
+            .startAsync()
     }
 
     override fun startDeleteRequestFlow(id: Int) {
-        deleteRequestFlow(id = id).startAsync()
+        requestRepository.delete(id = id).startAsync()
     }
 
     override fun startListeningRequestsFlow(turnOn: Boolean, vararg ids: Int) {
         Observable.fromIterable(ids.toList())
-            .flatMapCompletable { id -> switchRequestListeningFlow(id = id, turnOn = turnOn) }
-            .startAsync()
+            .flatMapCompletable { id ->
+                switchRequestListeningFlow(id = id, turnOn = turnOn)
+            }.startAsync()
     }
 
-    override fun startRequestCreationFlow(): Unit = run { navigateToCreateRequest().startAsync() }
+    override fun startRequestCreationFlow(): Unit = run { navigateToCreateRequest() }
 }

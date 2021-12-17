@@ -7,10 +7,9 @@ import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ScreenHomeBinding
-import com.spirit.cargo.presentation.screens.home.list_item.RequestsAdapter
+import com.spirit.cargo.presentation.screens.home.listItem.RequestsAdapter
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
-import com.spirit.cargo.utils.subscribe
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.spirit.cargo.utils.bind
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -31,24 +30,18 @@ class HomeScreen : Fragment(R.layout.screen_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-
         requests.adapter = requestsAdapter
-        viewModel.bind()
-
         createNewRequest.setOnClickListener { viewModel.startRequestCreationFlow() }
+
+        viewModel.bind()
     }
 
-    private fun BaseRequestsViewModel.bind() {
-        state.observeOn(AndroidSchedulers.mainThread())
-            .map(BaseRequestsViewModel.State::items)
-            .doOnNext(requestsAdapter::submitList)
-            .doOnNext(::bindNoRequestHintVisibility)
-            .doOnNext(::bindToggleAllButtonText)
-            .subscribe(viewLifecycleOwner)
-    }
-
-    private fun bindNoRequestHintVisibility(entities: List<*>) = with(binding) {
-        noRequestsHint.isVisible = entities.isEmpty()
+    private fun BaseRequestsViewModel.bind() = with(binding) {
+        items.bind(viewLifecycleOwner) {
+            requestsAdapter.submitList(it)
+            noRequestsHint.isVisible = it.isEmpty()
+            bindToggleAllButtonText(it)
+        }
     }
 
     private fun bindToggleAllButtonText(entities: List<RequestItem>) = with(binding) {
