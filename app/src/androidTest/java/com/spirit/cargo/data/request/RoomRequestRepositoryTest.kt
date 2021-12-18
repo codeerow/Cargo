@@ -1,7 +1,6 @@
-package com.spirit.cargo.repositories
+package com.spirit.cargo.data.request
 
 import com.spirit.cargo.core.RoomTest
-import com.spirit.cargo.data.request.RoomRequestRepository
 import com.spirit.cargo.data.request.model.RequestsDao
 import com.spirit.cargo.domain.request.CargoRequest
 import org.junit.Before
@@ -27,8 +26,7 @@ class RoomRequestRepositoryTest : RoomTest() {
         sut.create(expectedRequest.title, expectedRequest.url).blockingAwait()
 
         // THEN
-        sut.observe().test()
-            .assertValue(listOf(expectedRequest))
+        sut.observe().test().assertValue(listOf(expectedRequest))
     }
 
     @Test
@@ -42,8 +40,7 @@ class RoomRequestRepositoryTest : RoomTest() {
         sut.delete(requestToDelete.id).blockingAwait()
 
         // THEN
-        sut.observe().test()
-            .assertValue(listOf())
+        sut.observe().test().assertValue(listOf())
     }
 
     @Test
@@ -58,7 +55,6 @@ class RoomRequestRepositoryTest : RoomTest() {
         sut.update(expectedRequest).blockingAwait()
 
         // THEN
-        sut.read(expectedRequest.id).test()
-            .assertValue(expectedRequest)
+        sut.read(expectedRequest.id).test().assertValue(expectedRequest)
     }
 }
