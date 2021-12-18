@@ -1,17 +1,14 @@
-package com.spirit.cargo.viewmodels
+package com.spirit.cargo.presentation.screens.home
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import com.spirit.cargo.core.ViewModelTest
 import com.spirit.cargo.core.test_data.Common
 import com.spirit.cargo.domain.core.navigation.commands.NavigateToCreateRequest
 import com.spirit.cargo.domain.request.RequestRepository
-import com.spirit.cargo.presentation.screens.home.RequestsViewModel
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
-import io.reactivex.rxjava3.core.Completable
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import io.reactivex.rxjava3.core.Observable
 import org.junit.Test
 
@@ -22,43 +19,39 @@ class RequestsViewModelTest : ViewModelTest() {
         // GIVEN
         val initialItems = Common.requests
         val expectedItems = initialItems.map(RequestItem::fromDomain)
-        val repo: RequestRepository = mock {
-            on { observe() }.thenReturn(Observable.just(initialItems))
+        val repo: RequestRepository = mockk {
+            every { observe() } returns Observable.just(initialItems)
         }
 
+        // WHEN
         val sut = buildViewModel(requestRepo = repo)
         scheduler.triggerActions()
 
-        // WHEN
-        sut.items.test()
-            // THEN
-            .assertValues(expectedItems)
+        // THEN
+        sut.items.test().assertValue(expectedItems)
     }
 
     @Test
     fun `ViewModel load initial items finish with failure`() {
         // GIVEN
         val expectedItems = listOf<RequestItem>()
-        val repo: RequestRepository = mock {
-            on { observe() }.thenReturn(Observable.error(RuntimeException()))
+        val repo: RequestRepository = mockk {
+            every { observe() } returns Observable.error(RuntimeException())
         }
+
+        // WHEN
         val sut = buildViewModel(requestRepo = repo)
         scheduler.triggerActions()
 
-        // WHEN
-        sut.items.test()
-            // THEN
-            .assertValue(expectedItems)
+        // THEN
+        sut.items.test().assertValue(expectedItems)
     }
 
     @Test
     fun `ViewModel delete method invoke delete flow`() {
         // GIVEN
         val idToDelete = 1
-        val repo: RequestRepository = mock {
-            on { observe() }.thenReturn(Observable.just(listOf()))
-            on { delete(idToDelete) }.then { Completable.complete() }
-        }
+        val repo: RequestRepository = mockk(relaxed = true)
         val sut = buildViewModel(requestRepo = repo)
 
         // WHEN
@@ -66,43 +59,29 @@ class RequestsViewModelTest : ViewModelTest() {
         scheduler.triggerActions()
 
         // THEN
-        verify(repo, times(1)).delete(id = idToDelete)
+        verify(exactly = 1) { repo.delete(id = idToDelete) }
     }
 
     @Test
     fun `ViewModel invoke start creation flow then navigate to next screen`() {
         // GIVEN
-        val repo: RequestRepository = mock {
-            on { observe() }.thenReturn(Observable.just(listOf()))
-        }
-        val navigateToCreateRequest: NavigateToCreateRequest = mock()
-        val sut = buildViewModel(
-            requestRepo = repo,
-            navigateToCreateRequest = navigateToCreateRequest
-        )
+        val navigateToCreateRequest: NavigateToCreateRequest = mockk(relaxed = true)
+        val sut = buildViewModel(navigateToCreateRequest = navigateToCreateRequest)
 
         // WHEN
         sut.startRequestCreationFlow()
         scheduler.triggerActions()
 
         // THEN
-        verify(navigateToCreateRequest, times(1)).invoke()
+        verify(exactly = 1) { navigateToCreateRequest() }
     }
 
     @Test
     fun `when ViewModel invoke start listening requests flow then listening starts for each request`() {
         // GIVEN
         val requestIds = listOf(1, 2, 3)
-        val repo: RequestRepository = mock {
-            on { observe() }.thenReturn(Observable.just(listOf()))
-        }
-        val switchRequestListeningFlow: SwitchRequestListeningFlow = mock {
-            on { invoke(any(), any()) }.thenReturn(Completable.complete())
-        }
-        val sut = buildViewModel(
-            requestRepo = repo,
-            switchRequestListeningFlow = switchRequestListeningFlow
-        )
+        val switchRequestListeningFlow : SwitchRequestListeningFlow = mockk(relaxed = true)
+        val sut = buildViewModel(switchRequestListeningFlow = switchRequestListeningFlow)
 
         // WHEN
         sut.startListeningRequestsFlow(turnOn = true, ids = requestIds.toIntArray())
@@ -110,15 +89,15 @@ class RequestsViewModelTest : ViewModelTest() {
 
         // THEN
         requestIds.forEach {
-            verify(switchRequestListeningFlow, times(1)).invoke(it, true)
+            verify(exactly = 1) { switchRequestListeningFlow(it, true) }
         }
     }
 
 
     private fun buildViewModel(
-        requestRepo: RequestRepository = mock(),
-        switchRequestListeningFlow: SwitchRequestListeningFlow = mock(),
-        navigateToCreateRequest: NavigateToCreateRequest = mock()
+        requestRepo: RequestRepository = mockk(relaxed = true),
+        switchRequestListeningFlow: SwitchRequestListeningFlow = mockk(relaxed = true),
+        navigateToCreateRequest: NavigateToCreateRequest = mockk(relaxed = true)
     ) = RequestsViewModel(
         requestRepository = requestRepo,
         switchRequestListeningFlow = switchRequestListeningFlow,

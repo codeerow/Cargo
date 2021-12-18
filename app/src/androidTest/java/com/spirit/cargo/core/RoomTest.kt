@@ -27,5 +27,4 @@ open class RoomTest {
     fun closeDb() {
         db.close()
     }
-
 }
