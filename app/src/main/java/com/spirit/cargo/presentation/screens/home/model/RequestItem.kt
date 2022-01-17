@@ -8,18 +8,18 @@ data class RequestItem(
     val title: String,
     val url: String,
     val isActive: Boolean,
-    val orders: Int
+    val ordersCount: Int
 ) {
     fun toDomain() =
-        CargoRequest(id = id, title = title, url = url, isActive = isActive, orders = orders)
+        CargoRequest(id = id, title = title, url = url, isActive = isActive)
 
     companion object {
-        fun fromDomain(model: CargoRequest) = RequestItem(
-            id = model.id,
-            title = if (model.title.isBlank()) model.url else model.title,
-            url = model.url,
-            isActive = model.isActive,
-            orders = model.orders
+        fun CargoRequest.toRequestItem(ordersCount: Int) = RequestItem(
+            id = id,
+            title = if (title.isBlank()) url else title,
+            url = url,
+            isActive = isActive,
+            ordersCount = ordersCount
         )
 
         val diffCallback = object : DiffUtil.ItemCallback<RequestItem>() {

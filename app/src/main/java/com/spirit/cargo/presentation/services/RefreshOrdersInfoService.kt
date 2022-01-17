@@ -7,11 +7,11 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.spirit.cargo.R
-import com.spirit.cargo.domain.request.CargoRequest
 import com.spirit.cargo.presentation.MainActivity
 import io.reactivex.rxjava3.disposables.Disposable
 import org.koin.android.ext.android.inject
@@ -21,8 +21,10 @@ class RefreshOrdersInfoService : Service() {
     private val viewModel by inject<BaseRefreshOrdersInfoViewModel>()
     private var disposables = Disposable.empty()
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
+    private val binder = RefreshOrdersBinder()
+
+    override fun onBind(intent: Intent): IBinder {
+        return binder
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -61,12 +63,17 @@ class RefreshOrdersInfoService : Service() {
         }
     }
 
-    private fun buildNotification(requests: List<CargoRequest> = listOf()): Notification {
-        val contentText = getString(R.string.total_orders_count, requests.sumOf { it.orders })
+    private fun buildNotification(items: List<BaseRefreshOrdersInfoViewModel.Item> = listOf()): Notification {
+        val contentText = getString(R.string.total_orders_count, items.sumOf { it.ordersCount })
 
-        val pendingIntent: PendingIntent =
-            Intent(this, MainActivity::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        val pendingIntent: PendingIntent = Intent(this, MainActivity::class.java)
+            .let { notificationIntent ->
+                PendingIntent.getActivity(
+                    this,
+                    0,
+                    notificationIntent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
             }
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
@@ -77,13 +84,18 @@ class RefreshOrdersInfoService : Service() {
             .build()
     }
 
-    private fun updateNotification(requests: List<CargoRequest> = listOf()) {
-        val notification: Notification = buildNotification(requests)
+    private fun updateNotification(items: List<BaseRefreshOrdersInfoViewModel.Item> = listOf()) {
+        val notification: Notification = buildNotification(items)
 
         with(getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager) {
             notify(ONGOING_NOTIFICATION_ID, notification)
         }
     }
+
+    inner class RefreshOrdersBinder : Binder() {
+        val items get() = viewModel.entities
+    }
+
 
     companion object {
         private const val CHANNEL_ID = "com.spirit.cargo"

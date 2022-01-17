@@ -9,14 +9,12 @@ object Common {
             title = "1",
             url = "1",
             isActive = true,
-            orders = 1
         ),
         CargoRequest(
             id = 2,
             title = "2",
             url = "2",
             isActive = false,
-            orders = 2
         )
     )
 }

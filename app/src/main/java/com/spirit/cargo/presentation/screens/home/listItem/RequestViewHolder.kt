@@ -6,27 +6,18 @@ import com.spirit.cargo.databinding.ListItemRequestBinding
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
 
 class RequestViewHolder(
-    private val onDeleteClick: (Int) -> Unit,
     private val onListenSwitch: (Int, Boolean) -> Unit,
-    private val binding: ListItemRequestBinding
+    private val binding: ListItemRequestBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: RequestItem) = with(binding) {
-        with(title) {
-            text = item.title
-        }
-        with(toggle) {
+        title.text = item.title
+        toggle.apply {
             isChecked = item.isActive
-            setOnCheckedChangeListener { _, isChecked ->
-                onListenSwitch(item.id, isChecked)
-            }
+            setOnCheckedChangeListener { _, isChecked -> onListenSwitch(item.id, isChecked) }
         }
-        with(ordersCount) {
-            text = resources.getString(R.string.orders_count, item.orders)
-        }
-
-        root.setOnClickListener {
-            onDeleteClick(item.id)
+        ordersCount.apply {
+            text = resources.getString(R.string.orders_count, item.ordersCount)
         }
     }
 }

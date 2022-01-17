@@ -6,6 +6,7 @@ import com.spirit.cargo.domain.core.navigation.commands.NavigateToCreateRequest
 import com.spirit.cargo.domain.request.RequestRepository
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
+import com.spirit.cargo.presentation.screens.home.model.RequestItem.Companion.toRequestItem
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -18,7 +19,7 @@ class RequestsViewModelTest : ViewModelTest() {
     fun `ViewModel load initial items finish with success`() {
         // GIVEN
         val initialItems = Common.requests
-        val expectedItems = initialItems.map(RequestItem::fromDomain)
+        val expectedItems = initialItems.map { it.toRequestItem(1) }
         val repo: RequestRepository = mockk {
             every { observe() } returns Observable.just(initialItems)
         }
@@ -80,7 +81,7 @@ class RequestsViewModelTest : ViewModelTest() {
     fun `when ViewModel invoke start listening requests flow then listening starts for each request`() {
         // GIVEN
         val requestIds = listOf(1, 2, 3)
-        val switchRequestListeningFlow : SwitchRequestListeningFlow = mockk(relaxed = true)
+        val switchRequestListeningFlow: SwitchRequestListeningFlow = mockk(relaxed = true)
         val sut = buildViewModel(switchRequestListeningFlow = switchRequestListeningFlow)
 
         // WHEN
@@ -101,6 +102,7 @@ class RequestsViewModelTest : ViewModelTest() {
     ) = RequestsViewModel(
         requestRepository = requestRepo,
         switchRequestListeningFlow = switchRequestListeningFlow,
-        navigateToCreateRequest = navigateToCreateRequest
+        navigateToCreateRequest = navigateToCreateRequest,
+        observeRequestsToOrders = Observable.just(listOf())
     )
 }

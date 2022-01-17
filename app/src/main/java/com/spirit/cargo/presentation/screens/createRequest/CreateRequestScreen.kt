@@ -8,6 +8,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.spirit.cargo.R
 import com.spirit.cargo.databinding.ScreenCreateRequestBinding
 import com.spirit.cargo.utils.bind
+import com.spirit.cargo.utils.setVisibility
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateRequestScreen : Fragment(R.layout.screen_create_request) {
@@ -27,8 +28,9 @@ class CreateRequestScreen : Fragment(R.layout.screen_create_request) {
         viewModel.bind()
     }
 
-    private fun BaseCreateRequestViewModel.bind() {
-        linkError.bind(viewLifecycleOwner, onNext = ::bindUrlError)
+    private fun BaseCreateRequestViewModel.bind() = with(binding) {
+        errors.bind(viewLifecycleOwner, onNext = ::bindUrlError)
+        isLoading.bind(viewLifecycleOwner, onNext = progressBar::setVisibility)
     }
 
     private fun bindUrlError(errorRes: Int) {

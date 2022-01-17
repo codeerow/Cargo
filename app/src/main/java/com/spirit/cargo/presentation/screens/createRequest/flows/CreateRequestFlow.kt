@@ -19,11 +19,14 @@ class CreateRequestFlow(
     private val _errors: PublishSubject<Int> = PublishSubject.create()
     val errors: Observable<Int> = _errors
 
+
     operator fun invoke(title: String, url: String): Completable =
         validateUrl(url)
             .doOnSubscribe { _isLoading.onNext(true) }
             .flatMapCompletable {
-                if (it.urlIsBlank) Completable.fromAction { _errors.onNext(R.string.validation_error_url_should_not_be_empty) }
+                if (it.urlIsBlank) Completable.fromAction {
+                    _errors.onNext(R.string.validation_error_url_should_not_be_empty)
+                }
                 else requestRepository.create(title = title, url = url)
                     .andThen(navigateBackward())
             }

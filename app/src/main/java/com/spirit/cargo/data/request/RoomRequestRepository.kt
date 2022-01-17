@@ -13,7 +13,6 @@ class RoomRequestRepository(private val dao: RequestsDao) : RequestRepository {
             title = title,
             url = url,
             isActive = false,
-            orders = 0
         )
     )
 
@@ -23,7 +22,6 @@ class RoomRequestRepository(private val dao: RequestsDao) : RequestRepository {
             title = "",
             url = "",
             isActive = false,
-            orders = 0
         )
     )
 
@@ -34,7 +32,6 @@ class RoomRequestRepository(private val dao: RequestsDao) : RequestRepository {
     override fun read(id: Int): Single<CargoRequest> =
         dao.read(id = id).map(RoomRequestModel::toDomain)
 
-    override fun update(request: CargoRequest) = dao.update(
-        RoomRequestModel.fromDomain(request)
-    )
+    override fun update(request: CargoRequest) =
+        dao.update(RoomRequestModel.fromDomain(request))
 }

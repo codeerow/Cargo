@@ -4,7 +4,7 @@ import com.spirit.cargo.domain.order.OrderDataSource
 import io.reactivex.rxjava3.core.Single
 import org.jsoup.Jsoup
 import timber.log.Timber
-import java.net.UnknownHostException
+import java.io.IOException
 
 class JsoupOrderDataSource : OrderDataSource {
     override fun read(url: String): Single<Int> = Single.create {
@@ -15,7 +15,7 @@ class JsoupOrderDataSource : OrderDataSource {
                 .toInt()
 
             it.onSuccess(ordersCount)
-        } catch (error: UnknownHostException) {
+        } catch (error: IOException) {
             it.onSuccess(0)
             Timber.e(error)
         }

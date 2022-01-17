@@ -19,7 +19,7 @@ class CreateRequestViewModelTest : ViewModelTest() {
 
         // WHEN
         val sut = buildViewModel(createRequestFlow = flow)
-        val testObserver = sut.linkError.test()
+        val testObserver = sut.errors.test()
         scheduler.triggerActions()
 
         // THEN

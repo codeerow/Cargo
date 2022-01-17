@@ -27,6 +27,7 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/title_hint"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -42,12 +43,24 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/create_request_hint"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
+        android:text="https://www.della.by/search/a16b144d16e142f4lo3lz1z2z3z4z5z60z7z9y1y2y3h0ilk0m1.html"
         app:layout_constraintBottom_toTopOf="@+id/create"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/create"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

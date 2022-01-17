@@ -11,14 +11,12 @@ data class RoomRequestModel(
     val title: String,
     val url: String,
     val isActive: Boolean,
-    val orders: Int
 ) {
     fun toDomain() = CargoRequest(
         id = id,
         url = url,
         title = title,
         isActive = isActive,
-        orders = orders
     )
 
     companion object {
@@ -27,7 +25,6 @@ data class RoomRequestModel(
             title = model.title,
             url = model.url,
             isActive = model.isActive,
-            orders = model.orders
         )
     }
 }

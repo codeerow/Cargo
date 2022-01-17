@@ -14,24 +14,45 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private val binding by viewBinding(ActivityMainBinding::bind)
+    private val appBarConfiguration get() = AppBarConfiguration(navController.graph)
 
     private val navigationHolder by inject<Navigation<AppCompatActivity>>()
     private val navController get() = findNavController(R.id.nav_host_fragment_content_main)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar)
 
         navigationHolder.attach(this)
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
+
+//class MainActivity : AppCompatActivity(R.layout.activity_main) {
+//
+//    private val binding by viewBinding(ActivityMainBinding::bind)
+//
+//    private val navigationHolder by inject<Navigation<AppCompatActivity>>()
+//    private val navHostFragment get() = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+//    private val navController get() = navHostFragment.navController
+//
+//    private val appBarConfiguration get() = AppBarConfiguration(navController.graph)
+//
+//    override fun onCreate(savedInstanceState: Bundle?) = with(binding) {
+//        super.onCreate(savedInstanceState)
+//        setSupportActionBar(toolbar)
+//
+//        navigationHolder.attach(this@MainActivity)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+//    }
+//
+//    override fun onSupportNavigateUp(): Boolean {
+//        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+//    }
+//}
