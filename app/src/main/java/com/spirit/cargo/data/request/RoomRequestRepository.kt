@@ -12,7 +12,6 @@ class RoomRequestRepository(private val dao: RequestsDao) : RequestRepository {
         RoomRequestModel(
             title = title,
             url = url,
-            isActive = false,
         )
     )
 
@@ -21,7 +20,6 @@ class RoomRequestRepository(private val dao: RequestsDao) : RequestRepository {
             id = id,
             title = "",
             url = "",
-            isActive = false,
         )
     )
 

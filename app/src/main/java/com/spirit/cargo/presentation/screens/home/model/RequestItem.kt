@@ -5,21 +5,24 @@ import com.spirit.cargo.domain.request.CargoRequest
 
 data class RequestItem(
     val id: Int,
-    val title: String,
     val url: String,
+    val title: String,
+    val ordersCount: Int,
     val isActive: Boolean,
-    val ordersCount: Int
 ) {
-    fun toDomain() =
-        CargoRequest(id = id, title = title, url = url, isActive = isActive)
+    fun toDomain() = CargoRequest(
+        id = id,
+        title = title,
+        url = url,
+    )
 
     companion object {
-        fun CargoRequest.toRequestItem(ordersCount: Int) = RequestItem(
+        fun CargoRequest.toRequestItem(ordersCount: Int, isActive: Boolean) = RequestItem(
             id = id,
             title = if (title.isBlank()) url else title,
             url = url,
+            ordersCount = ordersCount,
             isActive = isActive,
-            ordersCount = ordersCount
         )
 
         val diffCallback = object : DiffUtil.ItemCallback<RequestItem>() {

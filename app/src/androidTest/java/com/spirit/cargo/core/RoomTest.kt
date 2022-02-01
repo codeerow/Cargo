@@ -3,7 +3,7 @@ package com.spirit.cargo.core
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
-import com.spirit.cargo.app.persistence.AppDatabase
+import com.spirit.cargo.app.core.persistence.AppDatabase
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

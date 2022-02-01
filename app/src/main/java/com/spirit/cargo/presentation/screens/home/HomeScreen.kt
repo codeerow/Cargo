@@ -17,7 +17,7 @@ import org.koin.core.parameter.parametersOf
 
 class HomeScreen : Fragment(R.layout.screen_home) {
 
-    private val viewModel by viewModel<BaseRequestsViewModel> { parametersOf(requireContext()) }
+    private val viewModel by viewModel<BaseRequestsViewModel> { parametersOf(this) }
 
     private val binding by viewBinding(ScreenHomeBinding::bind)
     private val requestsAdapter by lazy {

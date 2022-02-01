@@ -1,4 +1,4 @@
-package com.spirit.cargo.app.navigation
+package com.spirit.cargo.app.core.navigation
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle

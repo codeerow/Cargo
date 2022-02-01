@@ -1,7 +1,7 @@
-package com.spirit.cargo.app.navigation.commands
+package com.spirit.cargo.app.core.navigation.commands
 
 import com.spirit.cargo.R
-import com.spirit.cargo.app.navigation.AACNavigation
+import com.spirit.cargo.app.core.navigation.AACNavigation
 import com.spirit.cargo.domain.core.navigation.commands.NavigateToCreateRequest
 
 class AACNavigateToCreateRequest(private val navigationHolder: AACNavigation) :

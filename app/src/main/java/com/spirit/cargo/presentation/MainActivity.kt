@@ -2,7 +2,7 @@ package com.spirit.cargo.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,7 +18,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val appBarConfiguration get() = AppBarConfiguration(navController.graph)
 
     private val navigationHolder by inject<Navigation<AppCompatActivity>>()
-    private val navController get() = findNavController(R.id.nav_host_fragment_content_main)
+    private val navController
+        get() = (supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment)
+            .navController
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,26 +36,3 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
-
-//class MainActivity : AppCompatActivity(R.layout.activity_main) {
-//
-//    private val binding by viewBinding(ActivityMainBinding::bind)
-//
-//    private val navigationHolder by inject<Navigation<AppCompatActivity>>()
-//    private val navHostFragment get() = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
-//    private val navController get() = navHostFragment.navController
-//
-//    private val appBarConfiguration get() = AppBarConfiguration(navController.graph)
-//
-//    override fun onCreate(savedInstanceState: Bundle?) = with(binding) {
-//        super.onCreate(savedInstanceState)
-//        setSupportActionBar(toolbar)
-//
-//        navigationHolder.attach(this@MainActivity)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-//    }
-//
-//    override fun onSupportNavigateUp(): Boolean {
-//        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-//    }
-//}

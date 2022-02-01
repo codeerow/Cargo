@@ -1,6 +1,7 @@
 package com.spirit.cargo.presentation.screens.home
 
 import com.spirit.cargo.domain.core.navigation.commands.NavigateToCreateRequest
+import com.spirit.cargo.domain.request.RequestIdToOrdersCount
 import com.spirit.cargo.domain.request.RequestRepository
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import com.spirit.cargo.presentation.screens.home.model.RequestItem
@@ -10,9 +11,9 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class RequestsViewModel(
     private val requestRepository: RequestRepository,
-    observeRequestsToOrders: Observable<List<Pair<Int, Int>>>,
+    observeRequestsToOrders: Observable<RequestIdToOrdersCount>,
     private val switchRequestListeningFlow: SwitchRequestListeningFlow,
-    private val navigateToCreateRequest: NavigateToCreateRequest
+    private val navigateToCreateRequest: NavigateToCreateRequest,
 ) : BaseRequestsViewModel() {
 
     override val items: BehaviorSubject<List<RequestItem>> = BehaviorSubject.createDefault(listOf())
@@ -21,8 +22,9 @@ class RequestsViewModel(
         requestRepository.observe()
             .withLatestFrom(observeRequestsToOrders) { requests, requestsToOrders ->
                 requests.map { request ->
-                    val ordersCount = requestsToOrders.find { it.first == request.id }?.second ?: 0
-                    request.toRequestItem(ordersCount = ordersCount)
+                    val ordersCount = requestsToOrders[request.id] ?: 0
+                    val isActive = requestsToOrders[request.id] != null
+                    request.toRequestItem(ordersCount = ordersCount, isActive = isActive)
                 }
             }.doOnNext(items::onNext).startAsync()
     }
@@ -37,5 +39,5 @@ class RequestsViewModel(
             .startAsync()
     }
 
-    override fun startRequestCreationFlow(): Unit = run { navigateToCreateRequest() }
+    override fun startRequestCreationFlow() = navigateToCreateRequest()
 }

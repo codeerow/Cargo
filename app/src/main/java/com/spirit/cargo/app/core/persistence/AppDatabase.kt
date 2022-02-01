@@ -1,4 +1,4 @@
-package com.spirit.cargo.app.persistence
+package com.spirit.cargo.app.core.persistence
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -6,9 +6,11 @@ import com.spirit.cargo.data.request.model.RequestsDao
 import com.spirit.cargo.data.request.model.RoomRequestModel
 
 @Database(
-    entities = [RoomRequestModel::class],
+    entities = [
+        RoomRequestModel::class,
+    ],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun requestsDao(): RequestsDao

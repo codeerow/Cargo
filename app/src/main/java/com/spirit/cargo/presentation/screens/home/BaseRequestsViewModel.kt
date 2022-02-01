@@ -11,6 +11,6 @@ abstract class BaseRequestsViewModel : RxViewModel() {
 
     // input
     abstract fun startDeleteRequestFlow(id: Int)
-    abstract fun startListeningRequestsFlow(turnOn: Boolean, vararg ids: Int)
     abstract fun startRequestCreationFlow()
+    abstract fun startListeningRequestsFlow(turnOn: Boolean, vararg ids: Int)
 }

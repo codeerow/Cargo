@@ -1,11 +1,12 @@
 package com.spirit.cargo.app.di
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 import androidx.room.Room
-import com.spirit.cargo.app.navigation.AACNavigation
-import com.spirit.cargo.app.navigation.commands.AACNavigateBackward
-import com.spirit.cargo.app.navigation.commands.AACNavigateToCreateRequest
-import com.spirit.cargo.app.persistence.AppDatabase
+import com.spirit.cargo.app.core.navigation.AACNavigation
+import com.spirit.cargo.app.core.navigation.commands.AACNavigateBackward
+import com.spirit.cargo.app.core.navigation.commands.AACNavigateToCreateRequest
+import com.spirit.cargo.app.core.persistence.AppDatabase
 import com.spirit.cargo.data.order.JsoupOrderDataSource
 import com.spirit.cargo.data.request.RoomRequestRepository
 import com.spirit.cargo.domain.core.navigation.Navigation
@@ -21,6 +22,7 @@ import com.spirit.cargo.presentation.screens.home.BaseRequestsViewModel
 import com.spirit.cargo.presentation.screens.home.RequestsViewModel
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
 import com.spirit.cargo.presentation.services.BaseRefreshOrdersInfoViewModel
+import com.spirit.cargo.presentation.services.RefreshOrdersConnection
 import com.spirit.cargo.presentation.services.RefreshOrdersInfoViewModel
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.koin.android.ext.koin.androidApplication
@@ -56,7 +58,7 @@ val flows = module {
         CreateRequestFlow(
             requestRepository = get(),
             validateUrl = get(),
-            navigateBackward = get()
+            navigateBackward = get(),
         )
     }
     factory { (context: Context) ->
@@ -65,21 +67,20 @@ val flows = module {
 }
 
 val viewModels = module {
-    viewModel<BaseRequestsViewModel> { (context: Context) ->
+    viewModel<BaseRequestsViewModel> { (fragment: Fragment) ->
         val requestsToOrders = BehaviorSubject.createDefault(listOf<Pair<Int, Int>>())
-
         RequestsViewModel(
-            observeRequestsToOrders = requestsToOrders,
+            observeRequestsToOrders = RefreshOrdersConnection().connect(fragment),
             requestRepository = get(),
-            switchRequestListeningFlow = get { parametersOf(context) },
-            navigateToCreateRequest = get()
+            switchRequestListeningFlow = get { parametersOf(fragment.requireContext()) },
+            navigateToCreateRequest = get(),
         )
     }
     viewModel<BaseCreateRequestViewModel> { CreateRequestViewModel(createRequestFlow = get()) }
     factory<BaseRefreshOrdersInfoViewModel> {
         RefreshOrdersInfoViewModel(
             requestRepository = get(),
-            orderDataSource = get()
+            orderDataSource = get(),
         )
     }
 }
