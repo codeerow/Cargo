@@ -9,7 +9,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.4'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -55,4 +55,10 @@ ext {
     dependencies.gson = 'com.google.code.gson:gson:2.8.9'
     dependencies.okio = 'com.squareup.okio:okio:2.9.0'
     dependencies.okhttp = 'com.squareup.okhttp3:okhttp:4.9.0'
+
+    dependencies.compose = [
+            "androidx.compose.ui:ui:1.0.5",
+            "androidx.compose.material:material:1.0.5",
+            "androidx.compose.ui:ui-tooling-preview:1.0.5"
+    ]
 }
