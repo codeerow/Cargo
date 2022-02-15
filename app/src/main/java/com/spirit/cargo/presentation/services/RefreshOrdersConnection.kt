@@ -6,9 +6,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.spirit.cargo.domain.request.RequestIdToOrdersCount
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -34,15 +33,15 @@ class RefreshOrdersConnection {
     }
 
     fun connect(fragment: Fragment): Observable<RequestIdToOrdersCount> {
-        val lifecycleObserver = object : LifecycleObserver {
-            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-            fun onResume() {
+        val lifecycleObserver = object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                super.onResume(owner)
                 val intent = Intent(fragment.requireContext(), RefreshOrdersInfoService::class.java)
                 fragment.requireContext().bindService(intent, connection, Context.BIND_AUTO_CREATE)
             }
 
-            @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-            fun onPause() {
+            override fun onPause(owner: LifecycleOwner) {
+                super.onPause(owner)
                 fragment.requireContext().unbindService(connection)
             }
         }

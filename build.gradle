@@ -8,15 +8,15 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.android.tools.build:gradle:7.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1"
+        classpath "io.arrow-kt.analysis.kotlin:io.arrow-kt.analysis.kotlin.gradle.plugin:2.0"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
-apply plugin: "io.gitlab.arturbosch.detekt"
 
 task clean(type: Delete) {
     delete rootProject.buildDir
@@ -32,7 +32,7 @@ ext {
 
     dependencies.kotlinStdlib = 'org.jetbrains.kotlin:kotlin-stdlib'
 
-    dependencies.viewBinding = 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.4'
+    dependencies.viewBinding = 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.3'
 
     /* ReactiveX */
     dependencies.rxJava = 'io.reactivex.rxjava3:rxjava:3.0.12'
@@ -40,12 +40,12 @@ ext {
     dependencies.rxBinding = 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 
     /* DI */
-    dependencies.koinAndroid = 'io.insert-koin:koin-android:3.1.3'
-    dependencies.koinTest = 'io.insert-koin:koin-test:3.0.1'
+    dependencies.koinAndroid = 'io.insert-koin:koin-android:3.1.5'
+    dependencies.koinTest = 'io.insert-koin:koin-test:3.0.2'
 
     /* Logging */
     dependencies.timber = 'com.jakewharton.timber:timber:4.7.1'
-    dependencies.httpLogging = 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    dependencies.httpLogging = 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
     /* Networking */
     dependencies.retrofit = 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -54,5 +54,5 @@ ext {
     dependencies.retrofitConverterGson = 'com.squareup.retrofit2:converter-gson:2.9.0'
     dependencies.gson = 'com.google.code.gson:gson:2.8.9'
     dependencies.okio = 'com.squareup.okio:okio:2.9.0'
-    dependencies.okhttp = 'com.squareup.okhttp3:okhttp:4.9.0'
+    dependencies.okhttp = 'com.squareup.okhttp3:okhttp:4.9.1'
 }

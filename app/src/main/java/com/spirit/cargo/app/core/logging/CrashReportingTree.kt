@@ -6,7 +6,7 @@ import timber.log.Timber
 
 internal class CrashReportingTree : Timber.Tree() {
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        if (priority == Log.VERBOSE || priority == Log.DEBUG) {
+        if (priority == Log.VERBOSE or Log.DEBUG) {
             return
         }
         FakeCrashLibrary.log(priority, tag, message)

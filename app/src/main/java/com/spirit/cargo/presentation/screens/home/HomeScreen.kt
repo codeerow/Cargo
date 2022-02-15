@@ -36,8 +36,10 @@ class HomeScreen : Fragment(R.layout.screen_home) {
         requests.apply {
             adapter = requestsAdapter
             onSwipe(ItemTouchHelper.LEFT) { viewHolder, _ ->
-                val swipedRequest = requestsAdapter.currentList[viewHolder.adapterPosition]
-                viewModel.startDeleteRequestFlow(swipedRequest.id)
+                val itemPosition = viewHolder.absoluteAdapterPosition
+                requestsAdapter.currentList.getOrNull(itemPosition)?.let { swipedRequest ->
+                    viewModel.startDeleteRequestFlow(swipedRequest.id)
+                }
             }
         }
 
