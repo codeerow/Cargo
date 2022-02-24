@@ -20,7 +20,7 @@ class RoomRequestRepositoryTest : RoomTest() {
     fun `When item added to database then database return list of one item`() {
         // GIVEN
         val sut = RoomRequestRepository(dao = requestsDao)
-        val expectedRequest = CargoRequest(1, "1", "2", false, 0)
+        val expectedRequest = CargoRequest(1, "1", "2")
 
         // WHEN
         sut.create(expectedRequest.title, expectedRequest.url).blockingAwait()
@@ -49,7 +49,7 @@ class RoomRequestRepositoryTest : RoomTest() {
         val sut = RoomRequestRepository(dao = requestsDao)
         sut.create("", "").blockingAwait()
         val requestToUpdate = sut.observe().firstOrError().map { it.first() }.blockingGet()
-        val expectedRequest = CargoRequest(requestToUpdate.id, "1", "2", false, 0)
+        val expectedRequest = CargoRequest(requestToUpdate.id, "1", "2")
 
         // WHEN
         sut.update(expectedRequest).blockingAwait()

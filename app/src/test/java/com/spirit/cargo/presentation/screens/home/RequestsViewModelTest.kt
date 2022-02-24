@@ -1,7 +1,7 @@
 package com.spirit.cargo.presentation.screens.home
 
 import com.spirit.cargo.core.ViewModelTest
-import com.spirit.cargo.core.test_data.Common
+import com.spirit.cargo.core.testData.Common
 import com.spirit.cargo.domain.core.navigation.commands.NavigateToCreateRequest
 import com.spirit.cargo.domain.request.RequestRepository
 import com.spirit.cargo.presentation.screens.home.flows.SwitchRequestListeningFlow
@@ -19,7 +19,7 @@ class RequestsViewModelTest : ViewModelTest() {
     fun `ViewModel load initial items finish with success`() {
         // GIVEN
         val initialItems = Common.requests
-        val expectedItems = initialItems.map { it.toRequestItem(1) }
+        val expectedItems = initialItems.map { it.toRequestItem(0, false) }
         val repo: RequestRepository = mockk {
             every { observe() } returns Observable.just(initialItems)
         }
@@ -103,6 +103,6 @@ class RequestsViewModelTest : ViewModelTest() {
         requestRepository = requestRepo,
         switchRequestListeningFlow = switchRequestListeningFlow,
         navigateToCreateRequest = navigateToCreateRequest,
-        observeRequestsToOrders = Observable.just(listOf())
+        observeRequestsToOrders = Observable.just(mapOf())
     )
 }

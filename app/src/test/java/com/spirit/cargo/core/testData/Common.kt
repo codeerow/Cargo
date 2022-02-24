@@ -1,4 +1,4 @@
-package com.spirit.cargo.core.test_data
+package com.spirit.cargo.core.testData
 
 import com.spirit.cargo.domain.request.CargoRequest
 
@@ -8,13 +8,11 @@ object Common {
             id = 1,
             title = "1",
             url = "1",
-            isActive = true,
         ),
         CargoRequest(
             id = 2,
             title = "2",
             url = "2",
-            isActive = false,
         )
     )
 }

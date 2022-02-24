@@ -19,7 +19,7 @@ data class RequestItem(
     companion object {
         fun CargoRequest.toRequestItem(ordersCount: Int, isActive: Boolean) = RequestItem(
             id = id,
-            title = if (title.isBlank()) url else title,
+            title = title.ifBlank { url },
             url = url,
             ordersCount = ordersCount,
             isActive = isActive,
